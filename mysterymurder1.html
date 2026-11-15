@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackwood Manor - Expanded Mystery Simulator</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --panel-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --text-bright: #f0f6fc;
+            --accent: #d29922;
+            --accent-hover: #e3b341;
+            --danger: #f85149;
+            --success: #2ea043;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0 auto;
+        }
+
+        .container h1 {
+            color: var(--accent);
+            text-align: center;
+            font-size: 1.6rem;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .container button {
+            background-color: var(--accent);
+            color: #000;
+            border: none;
+            padding: 10px 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 5px 0;
+        }
+
+        .container button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .dialogue-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
+            font-style: italic;
+            color: var(--text-bright);
+        }
+
+        .clue-list, .suspect-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .clue-list li, .suspect-list li {
+            background: rgba(255,255,255,0.03);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .clue-list li:hover, .suspect-list li:hover {
+            background: rgba(255,255,255,0.07);
+        }
+
+        .suspect-card {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .suspect-card h3 {
+            margin-top: 0;
+            color: var(--text-bright);
+        }
+
+        .ending-win {
+            color: var(--success);
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .ending-lose {
+            color: var(--danger);
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Blackwood Manor: The Midnight Case</h1>
+    <div class="status-bar">
+        <span id="vm-current-location">Location: Grand Foyer</span>
+        <span id="vm-clues-found">Clues Discovered: 0 / 5</span>
+    </div>
+
+    <!-- MAIN HUB SCREEN -->
+    <div id="vm-hub-screen" class="screen active">
+        <p>Midnight at Blackwood Manor. Secretary Eleanor Vance has been murdered. The storm rages outside, trapping five suspects within the estate. Explore the mansion, collect clues across multiple rooms, and interrogate the suspects.</p>
+        
+        <div class="dialogue-box">
+            "The storm has locked the gates. Investigate the Study, the Conservatory, and the Library. Find the truth before the killer slips away!"
+        </div>
+
+        <div class="action-grid">
+            <button onclick="vmSwitchScreen('vm-rooms-screen')">Explore Mansion Rooms</button>
+            <button onclick="vmSwitchScreen('vm-suspects-screen')">Interrogate Suspects (5)</button>
+            <button onclick="vmSwitchScreen('vm-evidence-screen')">Review Evidence Locker</button>
+            <button onclick="vmSwitchScreen('vm-accuse-screen')">Make Final Accusation</button>
+        </div>
+    </div>
+
+    <!-- ROOMS SELECTION SCREEN -->
+    <div id="vm-rooms-screen" class="screen">
+        <h2>Mansion Investigation</h2>
+        <p>Choose a room to search for hidden clues:</p>
+        
+        <div class="action-grid">
+            <button onclick="vmSwitchScreen('vm-room-study')">The Study (Crime Scene)</button>
+            <button onclick="vmSwitchScreen('vm-room-conservatory')">The Conservatory</button>
+            <button onclick="vmSwitchScreen('vm-room-library')">The Library</button>
+        </div>
+
+        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 20px;">Back to Investigation Hub</button>
+    </div>
+
+    <!-- ROOM 1: STUDY -->
+    <div id="vm-room-study" class="screen">
+        <h2>The Study (Crime Scene)</h2>
+        <p>The room where Eleanor breathed her last. Search carefully:</p>
+        <ul class="clue-list">
+            <li onclick="vmFindClue(0, 'Desk Blotter: Shows a secret midnight meeting scheduled between Eleanor and Madame Genevieve.')">🔍 Examine the Executive Desk</li>
+            <li onclick="vmFindClue(1, 'Fireplace Embers: Half-burned financial ledgers bearing Lord Arthur’s private seal.')">🔍 Inspect the Fireplace</li>
+        </ul>
+        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
+    </div>
+
+    <!-- ROOM 2: CONSERVATORY -->
+    <div id="vm-room-conservatory" class="screen">
+        <h2>The Conservatory</h2>
+        <p>A humid glasshouse filled with exotic plants and shadows:</p>
+        <ul class="clue-list">
+            <li onclick="vmFindClue(2, 'The Ripped Lab Coat Pocket: Torn fabric scrap tucked behind a fern, embroidered with Dr. Cross’s monogram.')">🌿 Search Behind the Exotic Ferns</li>
+            <li onclick="vmFindClue(3, 'Empty Glass Vial: Traces of aconite poison dropped near the water fountain.')">💧 Check the Fountain Edge</li>
+        </ul>
+        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
+    </div>
+
+    <!-- ROOM 3: LIBRARY -->
+    <div id="vm-room-library" class="screen">
+        <h2>The Library</h2>
+        <p>Towering mahogany bookshelves smelling of old parchment and leather:</p>
+        <ul class="clue-list">
+            <li onclick="vmFindClue(4, 'The Security Logbook: Missing pages from 11:00 PM to Midnight, neatly excised with a surgical blade.')">📖 Inspect the Desk Ledger</li>
+        </ul>
+        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
+    </div>
+
+    <!-- SUSPECTS SCREEN (5 SUSPECTS) -->
+    <div id="vm-suspects-screen" class="screen">
+        <h2>Suspect Interrogations</h2>
+        <p>Select a suspect to question:</p>
+
+        <div class="suspect-card">
+            <h3>1. Lord Arthur Blackwood (The Heir)</h3>
+            <p><strong>Alibi:</strong> Claims he was smoking in the billiard room alone.</p>
+            <button onclick="vmShowDialogue('Arthur', 'I hated Eleanor digging into my debts, but I was nowhere near the study!')">Interrogate Arthur</button>
+        </div>
+
+        <div class="suspect-card">
+            <h3>2. Madame Genevieve (The Antiques Dealer)</h3>
+            <p><strong>Alibi:</strong> Claims she was resting in her suite.</p>
+            <button onclick="vmShowDialogue('Genevieve', 'Eleanor and I argued over rare artifacts earlier, but we settled our differences before dinner.')">Interrogate Genevieve</button>
+        </div>
+
+        <div class="suspect-card">
+            <h3>3. Dr. Julian Cross (The Family Physician)</h3>
+            <p><strong>Alibi:</strong> Claims he was organizing medical compounds in the parlor.</p>
+            <button onclick="vmShowDialogue('Cross', 'I use medical extracts and poisons for legitimate treatments. My lab coat? Anyone could have borrowed it.')">Interrogate Dr. Cross</button>
+        </div>
+
+        <div class="suspect-card">
+            <h3>4. Beatrice (The Head Maid)</h3>
+            <p><strong>Alibi:</strong> Claims she was polishing silverware in the pantry.</p>
+            <button onclick="vmShowDialogue('Beatrice', 'I saw Dr. Cross sneaking out of the study hallway right around midnight carrying a surgical case!')">Interrogate Beatrice</button>
+        </div>
+
+        <div class="suspect-card">
+            <h3>5. Victor Vance (The Disgruntled Accountant & Brother)</h3>
+            <p><strong>Alibi:</strong> Claims he was auditing tax reports in the archive room.</p>
+            <button onclick="vmShowDialogue('Victor', 'Eleanor knew the family was embezzling funds. Someone wanted her quiet, and it wasn’t me!')">Interrogate Victor</button>
+        </div>
+
+        <div id="vm-interrogate-box" class="dialogue-box" style="display:none;"></div>
+
+        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 15px;">Back to Investigation Hub</button>
+    </div>
+
+    <!-- EVIDENCE SCREEN -->
+    <div id="vm-evidence-screen" class="screen">
+        <h2>Evidence Locker</h2>
+        <p>Collected clues:</p>
+        <ul id="vm-collected-clues" class="clue-list">
+            <li><em>No clues discovered yet. Explore the mansion rooms!</em></li>
+        </ul>
+        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 15px;">Back to Investigation Hub</button>
+    </div>
+
+    <!-- ACCUSE SCREEN -->
+    <div id="vm-accuse-screen" class="screen">
+        <h2>Final Accusation</h2>
+        <p>Review your evidence. Who murdered Eleanor Vance?</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+            <button onclick="vmMakeAccusation('Arthur')">Accuse Lord Arthur Blackwood</button>
+            <button onclick="vmMakeAccusation('Genevieve')">Accuse Madame Genevieve</button>
+            <button onclick="vmMakeAccusation('Cross')">Accuse Dr. Julian Cross</button>
+            <button onclick="vmMakeAccusation('Beatrice')">Accuse Beatrice the Maid</button>
+            <button onclick="vmMakeAccusation('Victor')">Accuse Victor Vance</button>
+        </div>
+
+        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 15px;">Back to Investigation Hub</button>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="vm-result-screen" class="screen">
+        <h2 id="vm-result-title"></h2>
+        <p id="vm-result-text"></p>
+        <button onclick="location.reload()" style="margin-top: 15px;">Play Again</button>
+    </div>
+</div>
+
+<script>
+    let vmCluesFound = [false, false, false, false, false];
+    let vmClueDescriptions = [
+        "Desk Blotter: Secret midnight meeting with Madame Genevieve.",
+        "Fireplace Embers: Half-burned financial ledgers with Arthur's seal.",
+        "Ripped Lab Coat Pocket: Torn fabric scrap embroidered with Dr. Cross’s monogram in the Conservatory.",
+        "Empty Glass Vial: Traces of aconite poison near the fountain.",
+        "Security Logbook: Missing pages excised with a surgical blade in the Library."
+    ];
+
+    function vmSwitchScreen(screenId) {
+        document.querySelectorAll('.container .screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        
+        let locText = "Grand Foyer";
+        if(screenId === 'vm-rooms-screen') locText = "Mansion Hallway";
+        if(screenId === 'vm-room-study') locText = "The Study";
+        if(screenId === 'vm-room-conservatory') locText = "The Conservatory";
+        if(screenId === 'vm-room-library') locText = "The Library";
+        if(screenId === 'vm-suspects-screen') locText = "Drawing Room (Interrogations)";
+        if(screenId === 'vm-evidence-screen') locText = "Evidence Locker";
+        if(screenId === 'vm-accuse-screen') locText = "Grand Hall (Final Accusation)";
+        if(screenId === 'vm-result-screen') locText = "Conclusion";
+        document.getElementById('vm-current-location').innerText = `Location: ${locText}`;
+    }
+
+    function vmFindClue(index, text) {
+        if (!vmCluesFound[index]) {
+            vmCluesFound[index] = true;
+            vmUpdateCluesList();
+            alert("New Clue Discovered: " + text);
+        } else {
+            alert("You have already examined this area.");
+        }
+    }
+
+    function vmUpdateCluesList() {
+        let count = vmCluesFound.filter(Boolean).length;
+        document.getElementById('vm-clues-found').innerText = `Clues Discovered: ${count} / 5`;
+        
+        let listHTML = "";
+        for(let i=0; i<5; i++) {
+            if(vmCluesFound[i]) {
+                listHTML += `<li>✔ ${vmClueDescriptions[i]}</li>`;
+            }
+        }
+        document.getElementById('vm-collected-clues').innerHTML = listHTML || "<em>No clues discovered yet.</em>";
+    }
+
+    function vmShowDialogue(suspect, text) {
+        let box = document.getElementById('vm-interrogate-box');
+        box.style.display = 'block';
+        box.innerHTML = `<strong>${suspect}:</strong> "${text}"`;
+    }
+
+    function vmMakeAccusation(suspect) {
+        vmSwitchScreen('vm-result-screen');
+        let title = document.getElementById('vm-result-title');
+        let text = document.getElementById('vm-result-text');
+
+        // Correct Answer is Dr. Cross (Lab coat scrap in conservatory, aconite poison, surgical blade logbook excision)
+        if (suspect === 'Cross') {
+            title.className = "ending-win";
+            title.innerText = "Case Closed: Justice Served!";
+            text.innerText = "Brilliant detective work! Dr. Cross used his medical access and a surgical blade (matching the excised logbook pages) to administer aconite poison. The monogrammed lab coat pocket left in the Conservatory sealed his fate. He is placed under arrest and taken to jail!";
+        } else {
+            title.className = "ending-lose";
+            title.innerText = "Case Failed: The Killer Escapes!";
+            text.innerText = `You accused the wrong person! While ${suspect} had plenty of secrets, the true killer used the confusion to slip out into the stormy night. Justice has failed.`;
+        }
+    }
+</script>
+
+</body>
+</html>
