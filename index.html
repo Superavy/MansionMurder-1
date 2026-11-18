@@ -3,535 +3,664 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Murder, Murder! — Who Killed Her?</title>
+    <title>Murder, Murder at the Mansion - Superavy Games</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-color: #0d1117;
-            --panel-bg: #161b22;
-            --border-color: #30363d;
-            --text-main: #c9d1d9;
-            --text-bright: #f0f6fc;
-            --accent: #d29922;
-            --accent-hover: #e3b341;
-            --danger: #f85149;
-            --success: #2ea043;
-            --investigated-bg: rgba(46, 160, 67, 0.15);
-            --investigated-border: #2ea043;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.85)), url('images/mansion-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
         }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        }
-
-        h1 {
-            color: var(--accent);
-            text-align: center;
-            font-size: 1.7rem;
-            margin-top: 0;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--text-bright);
-            font-style: italic;
-            font-size: 1.05rem;
-            margin-top: 0;
-            margin-bottom: 16px;
-            letter-spacing: 1px;
-        }
-
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(0,0,0,0.2);
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        button {
-            background-color: var(--accent);
-            color: #000;
-            border: none;
-            padding: 10px 16px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin: 5px 0;
-        }
-
-        button:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .dialogue-box {
-            background: rgba(0,0,0,0.3);
-            border-left: 4px solid var(--accent);
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 4px 4px 0;
-            font-style: italic;
-            color: var(--text-bright);
-        }
-
-        .clue-list, .suspect-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .clue-list li, .suspect-list li {
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .clue-list li:hover {
-            background: rgba(255,255,255,0.07);
-        }
-
-        .clue-list li.investigated {
-            background: var(--investigated-bg);
-            border-color: var(--investigated-border);
-            color: var(--text-bright);
-        }
-
-        .suspect-card {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .suspect-portrait {
-            width: 105px;
-            height: 105px;
-            border-radius: 8px;
-            border: 2px solid var(--accent);
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .suspect-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        @media (max-width: 480px) {
-            .suspect-card {
-                flex-direction: column;
-                text-align: center;
-            }
-            .suspect-portrait {
-                width: 130px;
-                height: 130px;
-            }
-        }
-
-        .suspect-card.interviewed {
-            background: var(--investigated-bg);
-            border-color: var(--investigated-border);
-        }
-
-        .suspect-card.interviewed button {
-            background-color: var(--success);
-            color: #fff;
-        }
-
-        .suspect-card h3 {
-            margin-top: 0;
-            color: var(--text-bright);
-        }
-
-        .ending-win {
-            color: var(--success);
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .ending-lose {
-            color: var(--danger);
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Playfair Display', serif;
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-600 selection:text-white">
 
-<div class="container">
-    <h1>Murder, Murder!</h1>
-    <p class="subtitle">Who Killed Her?</p>
-    <div class="status-bar">
-        <span id="vm-current-location">Location: Grand Foyer</span>
-        <span id="vm-clues-found">Clues Discovered: 0 / 7</span>
-    </div>
-
-    <!-- MAIN HUB SCREEN -->
-    <div id="vm-hub-screen" class="screen active">
-        <p>Midnight at the Mansion. Secretary Eleanor has been murdered. The storm rages outside, trapping five suspects within the estate. Explore the mansion, collect clues across multiple rooms, and interrogate the suspects.</p>
-        
-        <div class="dialogue-box">
-            "The storm has locked the gates. Investigate rooms, examine your clues in detail, and find the truth before the killer slips away!"
-        </div>
-
-        <div class="action-grid">
-            <button onclick="vmSwitchScreen('vm-rooms-screen')">Explore Mansion Rooms</button>
-            <button onclick="vmSwitchScreen('vm-suspects-screen')">Interrogate Suspects (5)</button>
-            <button onclick="vmSwitchScreen('vm-evidence-screen')">Review Your Clues Collected So Far</button>
-            <button onclick="vmSwitchScreen('vm-summary-screen')">Summary of All Clues</button>
-            <button onclick="vmSwitchScreen('vm-accuse-screen')" style="grid-column: span 2;">Make Final Accusation</button>
-        </div>
-    </div>
-
-    <!-- ROOMS SELECTION SCREEN -->
-    <div id="vm-rooms-screen" class="screen">
-        <h2>Mansion Investigation</h2>
-        <p>Choose a room to search for hidden clues:</p>
-        
-        <div class="action-grid">
-            <button onclick="vmSwitchScreen('vm-room-study')">The Study (Crime Scene)</button>
-            <button onclick="vmSwitchScreen('vm-room-conservatory')">The Conservatory</button>
-            <button onclick="vmSwitchScreen('vm-room-library')">The Library</button>
-            <button onclick="vmSwitchScreen('vm-room-cellar')">The Wine Cellar</button>
-            <button onclick="vmSwitchScreen('vm-room-attic')">The Dusty Attic</button>
-        </div>
-
-        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 20px;">Back to Investigation Hub</button>
-    </div>
-
-    <!-- ROOM 1: STUDY -->
-    <div id="vm-room-study" class="screen">
-        <h2>The Study (Crime Scene)</h2>
-        <p>The room where Eleanor breathed her last. Search carefully:</p>
-        <ul class="clue-list">
-            <li id="clue-item-0" onclick="vmFindClue(0, 'Desk Blotter: Shows a secret midnight meeting scheduled between Eleanor and Madame Genevieve.')">🔍 Examine the Executive Desk</li>
-            <li id="clue-item-1" onclick="vmFindClue(1, 'Fireplace Embers: Half-burned financial ledgers bearing Arthur’s private seal.')">🔍 Inspect the Fireplace</li>
-        </ul>
-        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
-    </div>
-
-    <!-- ROOM 2: CONSERVATORY -->
-    <div id="vm-room-conservatory" class="screen">
-        <h2>The Conservatory</h2>
-        <p>A humid glasshouse filled with exotic plants and shadows:</p>
-        <ul class="clue-list">
-            <li id="clue-item-2" onclick="vmFindClue(2, 'The Ripped Lab Coat Pocket: Torn fabric scrap tucked behind a fern, embroidered with Julian’s monogram.')">🌿 Search Behind the Exotic Ferns</li>
-            <li id="clue-item-3" onclick="vmFindClue(3, 'Empty Glass Vial: Traces of aconite poison dropped near the water fountain.')">💧 Check the Fountain Edge</li>
-        </ul>
-        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
-    </div>
-
-    <!-- ROOM 3: LIBRARY -->
-    <div id="vm-room-library" class="screen">
-        <h2>The Library</h2>
-        <p>Towering mahogany bookshelves smelling of old parchment and leather:</p>
-        <ul class="clue-list">
-            <li id="clue-item-4" onclick="vmFindClue(4, 'The Security Logbook: Missing pages from 11:00 PM to Midnight, neatly excised with a surgical blade.')">📖 Inspect the Desk Ledger</li>
-        </ul>
-        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
-    </div>
-
-    <!-- ROOM 4: WINE CELLAR -->
-    <div id="vm-room-cellar" class="screen">
-        <h2>The Wine Cellar</h2>
-        <p>Cold, damp stone walls lined with dusty vintage bottles:</p>
-        <ul class="clue-list">
-            <li id="clue-item-5" onclick="vmFindClue(5, 'Hidden Alcove: A secret panel behind the wine racks containing forged legal deeds.')">🍷 Search Behind the Wine Racks</li>
-        </ul>
-        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
-    </div>
-
-    <!-- ROOM 5: ATTIC -->
-    <div id="vm-room-attic" class="screen">
-        <h2>The Dusty Attic</h2>
-        <p>A cobwebbed upper chamber filled with discarded crates and old trunks:</p>
-        <ul class="clue-list">
-            <li id="clue-item-6" onclick="vmFindClue(6, 'Old Trunk: Contains a discarded medical bag with missing surgical instruments.')">📦 Inspect the Old Steamer Trunk</li>
-        </ul>
-        <button onclick="vmSwitchScreen('vm-rooms-screen')" style="margin-top: 15px;">Back to Rooms</button>
-    </div>
-
-    <!-- SUSPECTS SCREEN (5 SUSPECTS) -->
-    <div id="vm-suspects-screen" class="screen">
-        <h2>Suspect Interrogations</h2>
-        <p>Select a suspect to question:</p>
-
-        <div class="suspect-card">
-            <img class="suspect-portrait" src="data:image/jpeg;base64,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" alt="Arthur">
-            <div class="suspect-info">
-            <h3>1. Arthur (The Heir)</h3>
-            <p><strong>Alibi:</strong> Claims he was smoking in the billiard room alone.</p>
-            <button onclick="vmShowDialogue(this, 'Arthur', 'I hated Eleanor digging into my debts, but I was nowhere near the study!')">Interrogate Arthur</button>
-            </div>
-        </div>
-
-        <div class="suspect-card">
-            <img class="suspect-portrait" src="data:image/jpeg;base64,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" alt="Genevieve">
-            <div class="suspect-info">
-            <h3>2. Genevieve (The Antiques Dealer)</h3>
-            <p><strong>Alibi:</strong> Claims she was resting in her suite.</p>
-            <button onclick="vmShowDialogue(this, 'Genevieve', 'Eleanor and I argued over rare artifacts earlier, but we settled our differences before dinner.')">Interrogate Genevieve</button>
-            </div>
-        </div>
-
-        <div class="suspect-card">
-            <img class="suspect-portrait" src="data:image/jpeg;base64,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" alt="Julian">
-            <div class="suspect-info">
-            <h3>3. Julian (The Family Physician)</h3>
-            <p><strong>Alibi:</strong> Claims he was organizing medical compounds in the parlor.</p>
-            <button onclick="vmShowDialogue(this, 'Julian', 'I use medical extracts and poisons for legitimate treatments. My lab coat? Anyone could have borrowed it.')">Interrogate Julian</button>
-            </div>
-        </div>
-
-        <div class="suspect-card">
-            <img class="suspect-portrait" src="data:image/jpeg;base64,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" alt="Beatrice">
-            <div class="suspect-info">
-            <h3>4. Beatrice (The Head Maid)</h3>
-            <p><strong>Alibi:</strong> Claims she was polishing silverware in the pantry.</p>
-            <button onclick="vmShowDialogue(this, 'Beatrice', 'I saw Julian sneaking out of the study hallway right around midnight carrying a surgical case!')">Interrogate Beatrice</button>
-            </div>
-        </div>
-
-        <div class="suspect-card">
-            <img class="suspect-portrait" src="data:image/jpeg;base64,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" alt="Victor">
-            <div class="suspect-info">
-            <h3>5. Victor (The Disgruntled Accountant & Brother)</h3>
-            <p><strong>Alibi:</strong> Claims he was auditing tax reports in the archive room.</p>
-            <button onclick="vmShowDialogue(this, 'Victor', 'Eleanor knew the family was embezzling funds. Someone wanted her quiet, and it wasn’t me!')">Interrogate Victor</button>
-            </div>
-        </div>
-
-        <div id="vm-interrogate-box" class="dialogue-box" style="display:none;"></div>
-
-        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 15px;">Back to Investigation Hub</button>
-    </div>
-
-    <!-- EVIDENCE SCREEN -->
-    <div id="vm-evidence-screen" class="screen">
-        <h2>Your Collected Clues</h2>
-        <p>Tap any collected clue below to analyze its deduction note:</p>
-        <ul id="vm-collected-clues" class="clue-list">
-            <li><em>No clues discovered yet. Explore the mansion rooms!</em></li>
-        </ul>
-        <div id="vm-clue-detail-box" class="dialogue-box" style="display:none; margin-top: 15px;"></div>
-        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 15px;">Back to Investigation Hub</button>
-    </div>
-
-    <!-- SUMMARY OF COLLECTED CLUES SCREEN -->
-    <div id="vm-summary-screen" class="screen">
-        <h2>Summary of Collected Clues</h2>
-        <p>Overview of physical evidence you have successfully found so far:</p>
-        <ul id="vm-summary-clues-list" class="clue-list">
-            <li><em>No clues discovered yet. Explore the mansion rooms to uncover evidence!</em></li>
-        </ul>
-        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 15px;">Back to Investigation Hub</button>
-    </div>
-
-    <!-- ACCUSE SCREEN -->
-    <div id="vm-accuse-screen" class="screen">
-        <h2>Final Accusation</h2>
-        <p>Review your evidence. Who murdered Eleanor?</p>
-        
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-            <button onclick="vmMakeAccusation('Arthur')">Accuse Arthur</button>
-            <button onclick="vmMakeAccusation('Genevieve')">Accuse Genevieve</button>
-            <button onclick="vmMakeAccusation('Julian')">Accuse Julian</button>
-            <button onclick="vmMakeAccusation('Beatrice')">Accuse Beatrice</button>
-            <button onclick="vmMakeAccusation('Victor')">Accuse Victor</button>
-        </div>
-
-        <button onclick="vmSwitchScreen('vm-hub-screen')" style="margin-top: 15px;">Back to Investigation Hub</button>
-    </div>
-
-    <!-- RESULT SCREEN -->
-    <div id="vm-result-screen" class="screen">
-        <h2 id="vm-result-title"></h2>
-        <p id="vm-result-text"></p>
-        <button onclick="location.reload()" style="margin-top: 15px;">Play Again</button>
-    </div>
-</div>
-
-<script>
-    let vmCluesFound = [false, false, false, false, false, false, false];
-    
-    let vmClueData = [
-        {
-            title: "Desk Blotter (Study)",
-            desc: "Shows a secret midnight meeting scheduled between Eleanor and Madame Genevieve.",
-            deduction: "Helps resolve the case by eliminating Genevieve as the sole prime suspect: although they argued, the blotter proves their meeting was professional, clearing her of the murder."
-        },
-        {
-            title: "Fireplace Embers (Study)",
-            desc: "Half-burned financial ledgers bearing Arthur’s private seal.",
-            deduction: "Helps resolve the case by revealing Arthur's financial motive (heavy debt), but proves he was burning ledgers rather than administering poison, redirecting suspicion."
-        },
-        {
-            title: "Ripped Lab Coat Pocket (Conservatory)",
-            desc: "Torn fabric scrap tucked behind a fern, embroidered with Julian’s monogram.",
-            deduction: "Crucial physical evidence that directly links Julian to the crime scene in the Conservatory, proving he lied about his whereabouts."
-        },
-        {
-            title: "Empty Glass Vial (Conservatory)",
-            desc: "Traces of aconite poison dropped near the water fountain.",
-            deduction: "Identifies the exact murder weapon and toxic agent used, pointing directly to a medically trained practitioner with access to poisons."
-        },
-        {
-            title: "Security Logbook (Library)",
-            desc: "Missing pages from 11:00 PM to Midnight, neatly excised with a surgical blade.",
-            deduction: "Proves someone with surgical precision tampered with building access records during the exact window of the murder."
-        },
-        {
-            title: "Hidden Alcove (Wine Cellar)",
-            desc: "A secret panel behind the wine racks containing forged legal deeds.",
-            deduction: "Exposes estate corruption and corporate fraud, providing context on why secrets were worth killing to protect."
-        },
-        {
-            title: "Old Steamer Trunk (Attic)",
-            desc: "Discarded medical bag with missing surgical instruments in the Attic.",
-            deduction: "Ties the missing surgical blade from the library logs directly to Julian's medical equipment inventory, sealing his indictment."
-        }
-    ];
-
-    function vmSwitchScreen(screenId) {
-        document.querySelectorAll('.container .screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-        
-        let locText = "Grand Foyer";
-        if(screenId === 'vm-rooms-screen') locText = "Mansion Hallway";
-        if(screenId === 'vm-room-study') locText = "The Study";
-        if(screenId === 'vm-room-conservatory') locText = "The Conservatory";
-        if(screenId === 'vm-room-library') locText = "The Library";
-        if(screenId === 'vm-room-cellar') locText = "The Wine Cellar";
-        if(screenId === 'vm-room-attic') locText = "The Dusty Attic";
-        if(screenId === 'vm-suspects-screen') locText = "Drawing Room (Interrogations)";
-        if(screenId === 'vm-evidence-screen') locText = "Your Collected Clues";
-        if(screenId === 'vm-summary-screen') locText = "Summary of Collected Clues";
-        if(screenId === 'vm-accuse-screen') locText = "Grand Hall (Final Accusation)";
-        if(screenId === 'vm-result-screen') locText = "Conclusion";
-        document.getElementById('vm-current-location').innerText = `Location: ${locText}`;
-    }
-
-    function vmFindClue(index, text) {
-        if (!vmCluesFound[index]) {
-            vmCluesFound[index] = true;
+    <!-- Header & Digital Box Art Banner -->
+    <header class="w-full bg-slate-900/90 border-b border-slate-800 backdrop-blur-md sticky top-0 z-40 shadow-xl">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
             
-            let clueElement = document.getElementById(`clue-item-${index}`);
-            if(clueElement) {
-                clueElement.classList.add('investigated');
-                clueElement.innerHTML = "✔ " + clueElement.innerHTML.replace("🔍 ", "").replace("🌿 ", "").replace("💧 ", "").replace("📖 ", "").replace("🍷 ", "").replace("📦 ", "");
+            <!-- Box Art Graphic & Title -->
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-600 to-amber-900 border border-amber-500/50 flex items-center justify-center shadow-lg shrink-0 relative overflow-hidden">
+                    <!-- Box Art Shield SVG Icon -->
+                    <svg class="w-10 h-10 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <div class="absolute bottom-0 inset-x-0 bg-black/60 text-[9px] text-center font-bold text-amber-300 py-0.5 tracking-widest uppercase">Rated 13+</div>
+                </div>
+                
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-0.5">
+                        <span class="bg-amber-600/30 text-amber-400 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-amber-500/30 tracking-wider">Superavy Games</span>
+                        <span class="text-xs text-slate-400">Interactive Mystery v2.0</span>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-amber-100 font-serif tracking-wide leading-tight">
+                        Murder, Murder at the Mansion
+                    </h1>
+                    <p class="text-xs text-slate-300 italic mt-0.5">
+                        "A howling storm envelops Blackwood Manor. Lord Blackwood lies lifeless. Five suspects remain inside."
+                    </p>
+                </div>
+            </div>
+
+            <!-- Header Status & Controls -->
+            <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+                <div class="text-xs text-slate-300 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
+                    Status: <span id="headerStatus" class="text-amber-400 font-semibold">Active Inquiry</span>
+                </div>
+                <button onclick="resetGame()" class="px-4 py-2 bg-rose-950 hover:bg-rose-900 text-rose-200 border border-rose-700/60 text-xs font-semibold rounded-xl shadow transition flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    New Game
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Game Workspace -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left 2 Columns: 5 Rooms & Inspection Area -->
+        <div class="lg:col-span-2 space-y-6">
+
+            <!-- 5 Rooms Section -->
+            <section class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-amber-100 flex items-center gap-2 font-serif">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        Manor Rooms (5 Locations)
+                    </h2>
+                    <span class="text-xs text-slate-400">Select to investigate</span>
+                </div>
+
+                <!-- 5 Rooms Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5" id="roomGrid">
+                    <!-- Populated via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Active Room Inspection & Evidence Panel -->
+            <section id="inspectionPanel" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg min-h-[300px] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                        <h3 id="activeRoomTitle" class="text-lg font-bold text-amber-200 font-serif">Select a Room to Begin</h3>
+                        <span id="roomSearchStatus" class="text-xs bg-slate-800 px-2.5 py-1 rounded-full text-slate-300 font-medium">Unsearched</span>
+                    </div>
+                    
+                    <p id="activeRoomDesc" class="text-sm text-slate-300 mb-5 leading-relaxed">
+                        Choose one of the 5 rooms above (Study, Conservatory, Library, Billiard Room, or Gallery) to inspect architectural trims, search for clues, and gather evidence.
+                    </p>
+
+                    <!-- Room Clues Container -->
+                    <div id="roomCluesContainer" class="space-y-3 mb-4">
+                        <!-- Clues appear here -->
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex justify-end">
+                    <button id="searchRoomBtn" onclick="searchCurrentRoom()" disabled class="px-5 py-2.5 bg-amber-700 hover:bg-amber-600 disabled:bg-slate-800 disabled:text-slate-600 disabled:cursor-not-allowed text-white font-semibold text-xs rounded-xl shadow transition flex items-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        Search Room for Clues
+                    </button>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Right Column: 5 Suspects Dossier & Notebook -->
+        <div class="space-y-6">
+
+            <!-- Suspects Dossier (5 Suspects with Picture Face Avatars) -->
+            <section class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-bold text-amber-100 flex items-center gap-2 font-serif">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 43.5c4.694 0 8.5-3.806 8.5-8.5S16.694 26.5 12 26.5 3.5 30.306 3.5 35s3.806 8.5 8.5 8.5zM12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878C9.518 22.463 9 23.682 9 25v1h6v-1c0-1.318-.518-2.537-1.438-3.122C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                        5 Suspects (First Names)
+                    </h2>
+                    <span class="text-xs text-slate-400">Click to question</span>
+                </div>
+                <div class="space-y-2.5" id="suspectsList">
+                    <!-- Populated via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Detective Notebook & Final Accusation -->
+            <section class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-bold text-amber-100 flex items-center gap-2 font-serif">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        Detective Notebook
+                    </h2>
+                    <span id="clueCountBadge" class="text-xs bg-amber-950 text-amber-300 border border-amber-800/60 px-2 py-0.5 rounded-full font-semibold">0 Clues Found</span>
+                </div>
+                <p class="text-xs text-slate-400 mb-3">Evidence compiled from the 5 manor rooms.</p>
+                
+                <div id="notebookCluesList" class="space-y-2 max-h-44 overflow-y-auto pr-1 mb-4">
+                    <div class="text-xs text-slate-500 italic p-3 bg-slate-950/60 rounded-lg border border-slate-800 text-center">
+                        No evidence logged yet. Search manor rooms to gather clues.
+                    </div>
+                </div>
+
+                <!-- Accusation Action Button -->
+                <button onclick="openAccusationModal()" class="w-full py-3 bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 text-white font-bold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer border border-amber-500/40">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    Make Your Final Accusation
+                </button>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-slate-950 border-t border-slate-900 py-4 text-center text-xs text-slate-500">
+        Murder, Murder at the Mansion &bull; Published by Superavy Games &bull; Rated 13+
+    </footer>
+
+    <!-- Suspect Interrogation Modal -->
+    <div id="interrogateModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeInterrogation()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div id="suspectModalContent"></div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeInterrogation()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg cursor-pointer">
+                    Conclude Interview
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Accusation Modal -->
+    <div id="accusationModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-amber-600/60 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <button onclick="closeAccusationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            
+            <h2 class="text-2xl font-bold text-amber-100 font-serif mb-2">Final Accusation</h2>
+            <p class="text-xs text-slate-300 mb-5">Review your detective notebook. Select the guilty suspect and the room where the crime took place.</p>
+
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">Select the Culprit:</label>
+                    <select id="accuseSuspectSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-amber-500"></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">Select the Crime Room:</label>
+                    <select id="accuseRoomSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-amber-500"></select>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+                <button onclick="closeAccusationModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer">
+                    Resume Investigation
+                </button>
+                <button onclick="submitAccusation()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow transition cursor-pointer">
+                    Submit Accusation
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Win / Loss Result Modal -->
+    <div id="resultModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border-2 border-amber-500 rounded-2xl max-w-lg w-full p-6 shadow-2xl text-center relative" id="resultContent"></div>
+    </div>
+
+    <!-- Notification Toast Box -->
+    <div id="messageBox" class="fixed bottom-6 right-6 bg-slate-900 border border-amber-500/80 text-amber-100 px-5 py-3 rounded-xl shadow-2xl z-50 hidden transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-3">
+        <svg class="w-5 h-5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span id="messageBoxText" class="text-xs font-medium">Notification</span>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // Game State Data with 5 Rooms and 5 Suspects
+        const gameState = {
+            activeRoomId: null,
+            rooms: {
+                study: {
+                    id: 'study',
+                    name: 'The Study',
+                    icon: '📜',
+                    colorAccent: 'amber',
+                    trim: 'Mahogany wood paneling with crimson velvet curtains and brass fixtures',
+                    desc: 'Lord Blackwood\'s private office. Ledgers and scattered documents rest upon the grand desk.',
+                    searched: false,
+                    clues: [
+                        { id: 'c1', title: 'Torn Will Document', desc: 'A charred scrap indicating sudden alterations to the family inheritance.' },
+                        { id: 'c2', title: 'Heavy Brass Candlestick', desc: 'Found near the fireplace with faint red stains on the metal base.' }
+                    ]
+                },
+                conservatory: {
+                    id: 'conservatory',
+                    name: 'The Conservatory',
+                    icon: '🌿',
+                    colorAccent: 'emerald',
+                    trim: 'Wrought-iron arched window frames with damp stone flooring and exotic ferns',
+                    desc: 'A humid glasshouse filled with rare orchids and moonlit shadows.',
+                    searched: false,
+                    clues: [
+                        { id: 'c3', title: 'Muddy Footprint Size 9', desc: 'Fresh tracks leading from the garden door toward the inner hallway.' },
+                        { id: 'c4', title: 'Broken Pocket Watch', desc: 'Stopped precisely at 11:42 PM inside a damp terracotta pot.' }
+                    ]
+                },
+                library: {
+                    id: 'library',
+                    name: 'The Library',
+                    icon: '📚',
+                    colorAccent: 'blue',
+                    trim: 'Dark oak bookshelves with gilded leather-bound volumes and sliding brass ladders',
+                    desc: 'Towering shelves of ancient literature. One specific bookshelf swings open to a secret passage.',
+                    searched: false,
+                    clues: [
+                        { id: 'c5', title: 'Poisoned Cognac Glass', desc: 'A crystal snifter laced with a bitter almond scent upon a reading table.' },
+                        { id: 'c6', title: 'Missing Poison Treatise', desc: 'An empty slot where a manuscript on rare herbal venoms belongs.' }
+                    ]
+                },
+                billiard: {
+                    id: 'billiard',
+                    name: 'Billiard Room',
+                    icon: '🎱',
+                    colorAccent: 'rose',
+                    trim: 'Deep green felt table with mahogany rails and polished brass cue racks',
+                    desc: 'A dimly lit parlor where late-night games of pool were played amidst drifting cigar smoke.',
+                    searched: false,
+                    clues: [
+                        { id: 'c7', title: 'Scratched Pool Cue', desc: 'A heavy wooden cue with scuff marks and fibers caught in the grip.' },
+                        { id: 'c8', title: 'Discarded Cigar Butt', desc: 'Still warm to the touch, indicating someone occupied this corner recently.' }
+                    ]
+                },
+                gallery: {
+                    id: 'gallery',
+                    name: 'The Gallery',
+                    icon: '🖼️',
+                    colorAccent: 'purple',
+                    trim: 'Ornate gilt picture frames with polished hardwood floors and velvet ropes',
+                    desc: 'A grand corridor displaying centuries of Blackwood ancestral portraits under dimmed spotlights.',
+                    searched: false,
+                    clues: [
+                        { id: 'c9', title: 'Dislodged Painting Hook', desc: 'An ancestral portrait crookedly hung, concealing a shallow wall safe.' },
+                        { id: 'c10', title: 'Velvet Glove Fragment', desc: 'A fine silk glove snagged upon a brass partition stanchion.' }
+                    ]
+                }
+            },
+            suspects: [
+                {
+                    id: 's1',
+                    name: 'Arthur',
+                    role: 'The Disinherited Heir',
+                    alibi: 'Claimed he was smoking cigars in the billiard room alone.',
+                    statement: '“My father threatened to cut me off permanently. But murder solves nothing when debt collectors are already at the gate.”',
+                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#fed7aa"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#0284c7"/><path d="M12 9h12v3H12z" fill="#334155"/></svg>`
+                },
+                {
+                    id: 's2',
+                    name: 'Eleanor',
+                    role: 'The Bitter Widow',
+                    alibi: 'Stated she was resting in her chambers with a migraine.',
+                    statement: '“Arthur cared more for his ledgers than for me. But murder? That is a vulgar accusation.”',
+                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#fbcfe8"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#db2777"/><path d="M12 10c0-4 3-7 6-7s6 3 6 7v4H12v-4z" fill="#f472b6"/></svg>`
+                },
+                {
+                    id: 's3',
+                    name: 'Thomas',
+                    role: 'The Loyal Butler',
+                    alibi: 'Was polishing silver down in the scullery.',
+                    statement: '“I have served Blackwood Manor for thirty years. Doors were bolted and secure.”',
+                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#cbd5e1"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#0f172a"/><polygon points="18,16 16,21 20,21" fill="#ef4444"/></svg>`
+                },
+                {
+                    id: 's4',
+                    name: 'Clara',
+                    role: 'The Family Physician',
+                    alibi: 'Claimed she was reviewing medical journals in the library.',
+                    statement: '“I prescribed Lord Blackwood his evening sedatives. Beyond my medical duties, I know nothing.”',
+                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#fed7aa"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#059669"/><circle cx="18" cy="11" r="2" fill="#ffffff"/></svg>`
+                },
+                {
+                    id: 's5',
+                    name: 'Victor',
+                    role: 'The Secret Blackmailer',
+                    alibi: 'Insisted he was waiting in the courtyard carriage house.',
+                    statement: '“Lord Blackwood owed me a considerable sum. Dead men pay no debts, so I had every reason to keep him breathing.”',
+                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#e2e8f0"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#1e293b"/><rect x="11" y="11" width="14" height="2" fill="#475569"/></svg>`
+                }
+            ],
+            discoveredClues: [],
+            trueCulprit: 's2', // Eleanor
+            trueRoom: 'study'
+        };
+
+        // Initialize Game on Load
+        window.onload = function() {
+            renderRooms();
+            renderSuspects();
+            updateNotebook();
+            populateAccusationDropdowns();
+        };
+
+        // Render Rooms
+        function renderRooms() {
+            const grid = document.getElementById('roomGrid');
+            grid.innerHTML = '';
+
+            Object.values(gameState.rooms).forEach(room => {
+                const isSelected = gameState.activeRoomId === room.id;
+                const card = document.createElement('div');
+                card.className = `p-3.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
+                    isSelected 
+                        ? 'bg-amber-950/40 border-amber-500 shadow-md ring-1 ring-amber-500' 
+                        : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-950'
+                }`;
+                card.onclick = () => selectRoom(room.id);
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-2xl">${room.icon}</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded uppercase font-semibold ${room.searched ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/60' : 'bg-slate-800 text-slate-400'}">
+                                ${room.searched ? 'Searched' : 'Unsearched'}
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-amber-100 font-serif text-sm mb-1">${room.name}</h4>
+                        <p class="text-[11px] text-slate-400 line-clamp-2">${room.desc}</p>
+                    </div>
+                    <div class="mt-2.5 pt-2 border-t border-slate-800/80 text-[10px] text-amber-400/90 font-medium truncate">
+                        Trim: ${room.trim}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Select Room
+        function selectRoom(roomId) {
+            gameState.activeRoomId = roomId;
+            renderRooms();
+
+            const room = gameState.rooms[roomId];
+            document.getElementById('activeRoomTitle').innerText = room.name;
+            
+            const statusBadge = document.getElementById('roomSearchStatus');
+            statusBadge.innerText = room.searched ? 'Already Searched' : 'Ready to Search';
+            statusBadge.className = room.searched 
+                ? 'text-xs bg-emerald-950 px-2.5 py-1 rounded-full text-emerald-300 font-medium border border-emerald-800/60' 
+                : 'text-xs bg-amber-950 px-2.5 py-1 rounded-full text-amber-300 font-medium border border-amber-800/60';
+
+            const descEl = document.getElementById('activeRoomDesc');
+            descEl.innerHTML = `${room.desc}<br><br><strong class="text-amber-400">Architectural Trim:</strong> <span class="italic text-slate-300">${room.trim}</span>`;
+
+            const cluesContainer = document.getElementById('roomCluesContainer');
+            cluesContainer.innerHTML = '';
+
+            if (room.searched) {
+                room.clues.forEach(clue => {
+                    const clueDiv = document.createElement('div');
+                    clueDiv.className = 'p-3 bg-slate-950/80 border border-amber-900/40 rounded-xl flex items-start gap-3';
+                    clueDiv.innerHTML = `
+                        <div class="w-7 h-7 rounded-full bg-amber-950 border border-amber-600/60 flex items-center justify-center text-amber-300 text-xs font-bold shrink-0 mt-0.5">🔍</div>
+                        <div>
+                            <h5 class="text-xs font-bold text-amber-200 font-serif">${clue.title}</h5>
+                            <p class="text-xs text-slate-300 mt-0.5">${clue.desc}</p>
+                        </div>
+                    `;
+                    cluesContainer.appendChild(clueDiv);
+                });
+            } else {
+                cluesContainer.innerHTML = `
+                    <div class="p-4 bg-slate-950/50 border border-slate-800 rounded-xl text-center text-xs text-slate-400">
+                        This room has not been searched yet. Click the button below to inspect corners and collect evidence.
+                    </div>
+                `;
             }
 
-            vmUpdateCluesLists();
-            alert(`New Clue Discovered!\n\n"${text}"\n\nThe tip has been added to your notebook.`);
-        } else {
-            alert("You have already examined this area and logged this clue.");
+            document.getElementById('searchRoomBtn').disabled = room.searched;
         }
-    }
 
-    function vmUpdateCluesLists() {
-        let count = vmCluesFound.filter(Boolean).length;
-        document.getElementById('vm-clues-found').innerText = `Clues Discovered: ${count} / 7`;
-        
-        let evidenceListHTML = "";
-        let summaryListHTML = "";
+        // Search Current Room
+        function searchCurrentRoom() {
+            if (!gameState.activeRoomId) return;
+            const room = gameState.rooms[gameState.activeRoomId];
+            if (room.searched) return;
 
-        for(let i=0; i<7; i++) {
-            if(vmCluesFound[i]) {
-                let clue = vmClueData[i];
-                evidenceListHTML += `<li onclick="vmInspectClue(${i})"><strong>✔ ${clue.title}:</strong> ${clue.desc} <br><em style="font-size:0.8rem; color:var(--accent);">(Tap to inspect deduction note)</em></li>`;
-                summaryListHTML += `<li><strong>✔ ${clue.title}:</strong> ${clue.desc}</li>`;
+            room.searched = true;
+
+            room.clues.forEach(clue => {
+                if (!gameState.discoveredClues.some(c => c.id === clue.id)) {
+                    gameState.discoveredClues.push(clue);
+                }
+            });
+
+            renderRooms();
+            selectRoom(room.id);
+            updateNotebook();
+            showNotification(`Searched ${room.name} and logged new evidence!`);
+        }
+
+        // Render Suspects
+        function renderSuspects() {
+            const list = document.getElementById('suspectsList');
+            list.innerHTML = '';
+
+            gameState.suspects.forEach(suspect => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-slate-950/70 hover:bg-slate-950 border border-slate-800 hover:border-slate-700 rounded-xl transition cursor-pointer flex items-center justify-between';
+                item.onclick = () => openInterrogation(suspect.id);
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full border border-amber-600/60 overflow-hidden shrink-0 shadow-inner">
+                            ${suspect.avatarSvg}
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-amber-100 font-serif">${suspect.name}</h4>
+                            <span class="text-[10px] text-slate-400">${suspect.role}</span>
+                        </div>
+                    </div>
+                    <span class="text-xs text-amber-400/90 font-medium bg-amber-950/60 px-2.5 py-1 rounded border border-amber-900/50">Question</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Interrogation Modal
+        function openInterrogation(suspectId) {
+            const suspect = gameState.suspects.find(s => s.id === suspectId);
+            if (!suspect) return;
+
+            const content = document.getElementById('suspectModalContent');
+            content.innerHTML = `
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-16 h-16 rounded-full border-2 border-amber-600 overflow-hidden shrink-0 shadow-md">
+                        ${suspect.avatarSvg}
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-amber-100 font-serif">${suspect.name}</h3>
+                        <span class="text-xs text-amber-400/90 font-medium">${suspect.role}</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-3 text-xs text-slate-300">
+                    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                        <strong class="text-amber-400 block mb-1">Stated Alibi:</strong>
+                        ${suspect.alibi}
+                    </div>
+                    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                        <strong class="text-amber-400 block mb-1">Statement Under Questioning:</strong>
+                        <p class="italic">${suspect.statement}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('interrogateModal').classList.remove('hidden');
+        }
+
+        function closeInterrogation() {
+            document.getElementById('interrogateModal').classList.add('hidden');
+        }
+
+        // Update Notebook
+        function updateNotebook() {
+            const list = document.getElementById('notebookCluesList');
+            const badge = document.getElementById('clueCountBadge');
+            
+            badge.innerText = `${gameState.discoveredClues.length} Clues Found`;
+
+            if (gameState.discoveredClues.length === 0) {
+                list.innerHTML = `
+                    <div class="text-xs text-slate-500 italic p-3 bg-slate-950/60 rounded-lg border border-slate-800 text-center">
+                        No evidence logged yet. Search manor rooms to gather clues.
+                    </div>
+                `;
+                return;
             }
+
+            list.innerHTML = '';
+            gameState.discoveredClues.forEach(clue => {
+                const clueEl = document.createElement('div');
+                clueEl.className = 'p-2.5 bg-slate-950/90 border border-slate-800 rounded-lg text-xs';
+                clueEl.innerHTML = `
+                    <div class="font-bold text-amber-200 font-serif mb-0.5 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        ${clue.title}
+                    </div>
+                    <div class="text-slate-400 text-[11px] leading-tight">${clue.desc}</div>
+                `;
+                list.appendChild(clueEl);
+            });
         }
-        document.getElementById('vm-collected-clues').innerHTML = evidenceListHTML || "<em>No clues discovered yet. Explore the mansion rooms!</em>";
-        document.getElementById('vm-summary-clues-list').innerHTML = summaryListHTML || "<em>No clues discovered yet. Explore the mansion rooms to uncover evidence!</em>";
-    }
 
-    function vmInspectClue(index) {
-        let clue = vmClueData[index];
-        let detailBox = document.getElementById('vm-clue-detail-box');
-        detailBox.style.display = 'block';
-        detailBox.innerHTML = `<strong>Case Analysis: ${clue.title}</strong><br>${clue.deduction}`;
-    }
+        // Populate Accusation Dropdowns
+        function populateAccusationDropdowns() {
+            const suspectSelect = document.getElementById('accuseSuspectSelect');
+            suspectSelect.innerHTML = '';
+            gameState.suspects.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.innerText = `${s.name} (${s.role})`;
+                suspectSelect.appendChild(opt);
+            });
 
-    function vmShowDialogue(btn, suspect, text) {
-        if (btn && btn.closest) {
-            let card = btn.closest('.suspect-card');
-            if (card) card.classList.add('interviewed');
-            if (!btn.innerText.startsWith('✔')) {
-                btn.innerText = '✔ Interviewed ' + suspect;
+            const roomSelect = document.getElementById('accuseRoomSelect');
+            roomSelect.innerHTML = '';
+            Object.values(gameState.rooms).forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                opt.innerText = r.name;
+                roomSelect.appendChild(opt);
+            });
+        }
+
+        function openAccusationModal() {
+            document.getElementById('accusationModal').classList.remove('hidden');
+        }
+
+        function closeAccusationModal() {
+            document.getElementById('accusationModal').classList.add('hidden');
+        }
+
+        // Submit Final Accusation
+        function submitAccusation() {
+            closeAccusationModal();
+
+            const selectedSuspectId = document.getElementById('accuseSuspectSelect').value;
+            const selectedRoomId = document.getElementById('accuseRoomSelect').value;
+
+            const isCorrectSuspect = selectedSuspectId === gameState.trueCulprit;
+            const isCorrectRoom = selectedRoomId === gameState.trueRoom;
+
+            const suspectObj = gameState.suspects.find(s => s.id === gameState.trueCulprit);
+            const roomObj = gameState.rooms[gameState.trueRoom];
+
+            const resultContent = document.getElementById('resultContent');
+
+            if (isCorrectSuspect && isCorrectRoom) {
+                document.getElementById('headerStatus').innerText = 'Case Solved!';
+                document.getElementById('headerStatus').className = 'text-emerald-400 font-semibold';
+
+                resultContent.innerHTML = `
+                    <div class="w-16 h-16 bg-emerald-950 border border-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-400 text-3xl font-bold">✓</div>
+                    <h2 class="text-2xl font-bold text-amber-100 font-serif mb-2">Brilliant Deduction, Detective!</h2>
+                    <p class="text-xs text-slate-300 mb-6 leading-relaxed">
+                        You successfully unmasked <strong class="text-amber-300">${suspectObj.name}</strong> as the murderer who struck inside <strong class="text-amber-300">${roomObj.name}</strong>! Scotland Yard has arrived and the culprit has been detained.
+                    </p>
+                    <button onclick="resetGame()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow transition cursor-pointer">
+                        Play Again
+                    </button>
+                `;
+            } else {
+                document.getElementById('headerStatus').innerText = 'Wrong Accusation';
+                document.getElementById('headerStatus').className = 'text-rose-400 font-semibold';
+
+                resultContent.innerHTML = `
+                    <div class="w-16 h-16 bg-rose-950 border border-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-400 text-3xl font-bold">✗</div>
+                    <h2 class="text-2xl font-bold text-amber-100 font-serif mb-2">A Fatal Miscalculation...</h2>
+                    <p class="text-xs text-slate-300 mb-6 leading-relaxed">
+                        Your accusation was incorrect! The true mastermind was <strong class="text-amber-300">${suspectObj.name}</strong> in <strong class="text-amber-300">${roomObj.name}</strong>. The real killer has slipped away into the stormy night.
+                    </p>
+                    <button onclick="resetGame()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl shadow transition cursor-pointer">
+                        Try Again
+                    </button>
+                `;
             }
+
+            document.getElementById('resultModal').classList.remove('hidden');
         }
-        let box = document.getElementById('vm-interrogate-box');
-        box.style.display = 'block';
-        box.innerHTML = `<strong>${suspect}:</strong> "${text}"`;
-    }
 
-    function vmMakeAccusation(suspect) {
-        vmSwitchScreen('vm-result-screen');
-        let title = document.getElementById('vm-result-title');
-        let text = document.getElementById('vm-result-text');
+        // Reset Game
+        function resetGame() {
+            document.getElementById('resultModal').classList.add('hidden');
+            document.getElementById('headerStatus').innerText = 'Active Inquiry';
+            document.getElementById('headerStatus').className = 'text-amber-400 font-semibold';
 
-        if (suspect === 'Julian') {
-            title.className = "ending-win";
-            title.innerText = "Case Closed: Justice Served!";
-            text.innerText = "Brilliant detective work! Julian used his medical access, a surgical blade, and the missing instruments from the attic to administer aconite poison. The monogrammed lab coat pocket left in the Conservatory sealed his fate. He is placed under arrest!";
-        } else {
-            title.className = "ending-lose";
-            title.innerText = "Case Failed: The Killer Escapes!";
-            text.innerText = `You accused the wrong person! While ${suspect} had plenty of secrets, the true killer used the confusion to slip out into the stormy night. Justice has failed.`;
+            gameState.activeRoomId = null;
+            gameState.discoveredClues = [];
+            Object.values(gameState.rooms).forEach(r => r.searched = false);
+
+            renderRooms();
+            renderSuspects();
+            updateNotebook();
+
+            // Randomize culprit and room
+            const suspectKeys = gameState.suspects.map(s => s.id);
+            const roomKeys = Object.keys(gameState.rooms);
+            gameState.trueCulprit = suspectKeys[Math.floor(Math.random() * suspectKeys.length)];
+            gameState.trueRoom = roomKeys[Math.floor(Math.random() * roomKeys.length)];
+
+            document.getElementById('activeRoomTitle').innerText = 'Select a Room to Begin';
+            document.getElementById('roomSearchStatus').innerText = 'Unsearched';
+            document.getElementById('roomSearchStatus').className = 'text-xs bg-slate-800 px-2.5 py-1 rounded-full text-slate-300 font-medium';
+            document.getElementById('activeRoomDesc').innerHTML = 'Choose one of the 5 rooms above (Study, Conservatory, Library, Billiard Room, or Gallery) to inspect architectural trims, search for clues, and gather evidence.';
+            document.getElementById('roomCluesContainer').innerHTML = '';
+            document.getElementById('searchRoomBtn').disabled = true;
+
+            showNotification('New investigation case opened at Blackwood Manor.');
         }
-    }
-</script>
 
+        // Notification Toast
+        function showNotification(text) {
+            const box = document.getElementById('messageBox');
+            const textEl = document.getElementById('messageBoxText');
+            textEl.innerText = text;
+
+            box.classList.remove('hidden');
+            setTimeout(() => {
+                box.classList.remove('translate-y-10', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                box.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => {
+                    box.classList.add('hidden');
+                }, 300);
+            }, 3500);
+        }
+    </script>
 </body>
 </html>
