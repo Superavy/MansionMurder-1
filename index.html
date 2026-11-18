@@ -3,664 +3,670 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Murder, Murder at the Mansion - Superavy Games</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Murder, Murder at the Mansion</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --panel-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-gold: #f59e0b;
+            --accent-crimson: #e11d48;
+            --accent-emerald: #10b981;
+            --accent-indigo: #6366f1;
+            --accent-violet: #8b5cf6;
         }
-        h1, h2, h3, h4, .font-serif {
-            font-family: 'Playfair Display', serif;
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 2px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .brand-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .publisher-credit {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .timer-badge {
+            background: #111827;
+            border: 2px solid var(--accent-crimson);
+            color: #fca5a5;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .timer-badge.warning {
+            color: #ef4444;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--panel-border);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Rooms Grid */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .room-card {
+            background: #111827;
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 5px solid var(--accent-gold);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .room-card:hover {
+            transform: translateY(-3px);
+            background: #1f2937;
+        }
+
+        .room-card.study { border-left-color: var(--accent-crimson); }
+        .room-card.conservatory { border-left-color: var(--accent-emerald); }
+        .room-card.library { border-left-color: var(--accent-indigo); }
+        .room-card.billiard { border-left-color: var(--accent-gold); }
+        .room-card.gallery { border-left-color: var(--accent-violet); }
+
+        .room-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .room-status {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Suspects Section */
+        .suspects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .suspect-card {
+            background: #111827;
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid var(--panel-border);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suspect-card:hover {
+            border-color: var(--accent-gold);
+            background: #1f2937;
+        }
+
+        .suspect-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 10px auto;
+            background: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--panel-border);
+            overflow: hidden;
+        }
+
+        .suspect-name {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .suspect-relation {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Notebook */
+        .notebook-log {
+            background: #111827;
+            border-radius: 8px;
+            padding: 12px;
+            height: 280px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--panel-border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .log-entry {
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: #1f2937;
+            border-left: 3px solid var(--accent-gold);
+        }
+
+        /* Action Buttons */
+        .action-panel {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-accuse {
+            background: var(--accent-crimson);
+            color: white;
+        }
+
+        .btn-reset {
+            background: #374151;
+            color: white;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--panel-bg);
+            border: 2px solid var(--panel-border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            position: relative;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: var(--text-main);
+        }
+
+        .modal-title {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #d1d5db;
+            margin-bottom: 20px;
+        }
+
+        .accusation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .accuse-option {
+            background: #111827;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accuse-option:hover {
+            border-color: var(--accent-crimson);
+            background: #1f2937;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-600 selection:text-white">
+<body>
 
-    <!-- Header & Digital Box Art Banner -->
-    <header class="w-full bg-slate-900/90 border-b border-slate-800 backdrop-blur-md sticky top-0 z-40 shadow-xl">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            
-            <!-- Box Art Graphic & Title -->
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-600 to-amber-900 border border-amber-500/50 flex items-center justify-center shadow-lg shrink-0 relative overflow-hidden">
-                    <!-- Box Art Shield SVG Icon -->
-                    <svg class="w-10 h-10 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
-                    <div class="absolute bottom-0 inset-x-0 bg-black/60 text-[9px] text-center font-bold text-amber-300 py-0.5 tracking-widest uppercase">Rated 13+</div>
-                </div>
-                
-                <div class="flex-1">
-                    <div class="flex items-center gap-2 mb-0.5">
-                        <span class="bg-amber-600/30 text-amber-400 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-amber-500/30 tracking-wider">Superavy Games</span>
-                        <span class="text-xs text-slate-400">Interactive Mystery v2.0</span>
-                    </div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold text-amber-100 font-serif tracking-wide leading-tight">
-                        Murder, Murder at the Mansion
-                    </h1>
-                    <p class="text-xs text-slate-300 italic mt-0.5">
-                        "A howling storm envelops Main City. Lord Blackwood lies lifeless. Five suspects remain inside."
-                    </p>
-                </div>
-            </div>
-
-            <!-- Header Status & Controls -->
-            <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                <div class="text-xs text-slate-300 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
-                    Status: <span id="headerStatus" class="text-amber-400 font-semibold">Active Inquiry</span>
-                </div>
-                <button onclick="resetGame()" class="px-4 py-2 bg-rose-950 hover:bg-rose-900 text-rose-200 border border-rose-700/60 text-xs font-semibold rounded-xl shadow transition flex items-center gap-2 cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    New Game
-                </button>
-            </div>
-
+    <header>
+        <div class="brand-box">
+            <div class="game-title">Murder, Murder at the Mansion</div>
+            <div class="publisher-credit">Superavy Games • Immersive Detective Mystery</div>
+        </div>
+        <div class="timer-badge" id="timerDisplay">
+            ⏱️ <span id="timeRemaining">20:00</span>
         </div>
     </header>
 
-    <!-- Main Game Workspace -->
-    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- Left 2 Columns: 5 Rooms & Inspection Area -->
-        <div class="lg:col-span-2 space-y-6">
-
-            <!-- 5 Rooms Section -->
-            <section class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-amber-100 flex items-center gap-2 font-serif">
-                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                        Manor Rooms (5 Locations)
-                    </h2>
-                    <span class="text-xs text-slate-400">Select to investigate</span>
-                </div>
-
-                <!-- 5 Rooms Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5" id="roomGrid">
-                    <!-- Populated via JavaScript -->
-                </div>
-            </section>
-
-            <!-- Active Room Inspection & Evidence Panel -->
-            <section id="inspectionPanel" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg min-h-[300px] flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-                        <h3 id="activeRoomTitle" class="text-lg font-bold text-amber-200 font-serif">Select a Room to Begin</h3>
-                        <span id="roomSearchStatus" class="text-xs bg-slate-800 px-2.5 py-1 rounded-full text-slate-300 font-medium">Unsearched</span>
+    <div class="main-container">
+        <!-- Left Column: Investigation Zones -->
+        <div class="panel">
+            <h2><span>🏛️ Mansion Investigation Rooms</span> <span style="font-size: 0.85rem; color: var(--text-muted);" id="roomCounter">Searched: 0/5</span></h2>
+            <div class="rooms-grid">
+                <div class="room-card study" onclick="searchRoom('study')">
+                    <div class="room-header">
+                        <span>📚</span> Study
                     </div>
-                    
-                    <p id="activeRoomDesc" class="text-sm text-slate-300 mb-5 leading-relaxed">
-                        Choose one of the 5 rooms above (Study, Conservatory, Library, Billiard Room, or Gallery) to inspect architectural trims, search for clues, and gather evidence.
-                    </p>
-
-                    <!-- Room Clues Container -->
-                    <div id="roomCluesContainer" class="space-y-3 mb-4">
-                        <!-- Clues appear here -->
+                    <div class="room-status" id="status-study">Status: Unsearched</div>
+                </div>
+                <div class="room-card conservatory" onclick="searchRoom('conservatory')">
+                    <div class="room-header">
+                        <span>🌿</span> Conservatory
                     </div>
+                    <div class="room-status" id="status-conservatory">Status: Unsearched</div>
                 </div>
-
-                <div class="pt-4 border-t border-slate-800 flex justify-end">
-                    <button id="searchRoomBtn" onclick="searchCurrentRoom()" disabled class="px-5 py-2.5 bg-amber-700 hover:bg-amber-600 disabled:bg-slate-800 disabled:text-slate-600 disabled:cursor-not-allowed text-white font-semibold text-xs rounded-xl shadow transition flex items-center gap-2 cursor-pointer">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        Search Room for Clues
-                    </button>
+                <div class="room-card library" onclick="searchRoom('library')">
+                    <div class="room-header">
+                        <span>📜</span> Library
+                    </div>
+                    <div class="room-status" id="status-library">Status: Unsearched</div>
                 </div>
-            </section>
+                <div class="room-card billiard" onclick="searchRoom('billiard')">
+                    <div class="room-header">
+                        <span>🎱</span> Billiard Room
+                    </div>
+                    <div class="room-status" id="status-billiard">Status: Unsearched</div>
+                </div>
+                <div class="room-card gallery" onclick="searchRoom('gallery')">
+                    <div class="room-header">
+                        <span>🖼️ Gallery</span>
+                    </div>
+                    <div class="room-status" id="status-gallery">Status: Unsearched</div>
+                </div>
+            </div>
 
+            <h2><span>👥 Suspects Dossier</span> <span style="font-size: 0.85rem; color: var(--text-muted);">Click to Interrogate</span></h2>
+            <div class="suspects-grid">
+                <!-- Arthur -->
+                <div class="suspect-card" onclick="interrogateSuspect('Arthur')">
+                    <div class="suspect-avatar">
+                        <svg viewBox="0 0 100 100" width="70" height="70">
+                            <circle cx="50" cy="40" r="22" fill="#4b5563"/>
+                            <path d="M 20 85 C 20 60, 80 60, 80 85" fill="#1e3a8a"/>
+                            <rect x="38" y="32" width="24" height="6" fill="#1f2937" rx="2"/>
+                        </svg>
+                    </div>
+                    <div class="suspect-name">Arthur</div>
+                    <div class="suspect-relation">The Business Partner</div>
+                </div>
+                <!-- Eleanor -->
+                <div class="suspect-card" onclick="interrogateSuspect('Eleanor')">
+                    <div class="suspect-avatar">
+                        <svg viewBox="0 0 100 100" width="70" height="70">
+                            <circle cx="50" cy="42" r="20" fill="#6b7280"/>
+                            <path d="M 22 85 C 22 62, 78 62, 78 85" fill="#831843"/>
+                            <path d="M 30 35 Q 50 20 70 35" fill="none" stroke="#f59e0b" stroke-width="4"/>
+                        </svg>
+                    </div>
+                    <div class="suspect-name">Eleanor</div>
+                    <div class="suspect-relation">The Heir</div>
+                </div>
+                <!-- Thomas -->
+                <div class="suspect-card" onclick="interrogateSuspect('Thomas')">
+                    <div class="suspect-avatar">
+                        <svg viewBox="0 0 100 100" width="70" height="70">
+                            <circle cx="50" cy="40" r="21" fill="#4b5563"/>
+                            <path d="M 20 85 C 20 60, 80 60, 80 85" fill="#065f46"/>
+                            <line x1="40" y1="45" x2="60" y2="45" stroke="#111827" stroke-width="3"/>
+                        </svg>
+                    </div>
+                    <div class="suspect-name">Thomas</div>
+                    <div class="suspect-relation">The Estate Butler</div>
+                </div>
+                <!-- Clara -->
+                <div class="suspect-card" onclick="interrogateSuspect('Clara')">
+                    <div class="suspect-avatar">
+                        <svg viewBox="0 0 100 100" width="70" height="70">
+                            <circle cx="50" cy="42" r="20" fill="#9ca3af"/>
+                            <path d="M 22 85 C 22 62, 78 62, 78 85" fill="#312e81"/>
+                            <circle cx="50" cy="35" r="18" fill="none" stroke="#e11d48" stroke-width="3"/>
+                        </svg>
+                    </div>
+                    <div class="suspect-name">Clara</div>
+                    <div class="suspect-relation">The Confidant</div>
+                </div>
+                <!-- Victor -->
+                <div class="suspect-card" onclick="interrogateSuspect('Victor')">
+                    <div class="suspect-avatar">
+                        <svg viewBox="0 0 100 100" width="70" height="70">
+                            <circle cx="50" cy="40" r="22" fill="#374151"/>
+                            <path d="M 20 85 C 20 60, 80 60, 80 85" fill="#78350f"/>
+                            <path d="M 42 42 L 58 42" stroke="#f59e0b" stroke-width="3"/>
+                        </svg>
+                    </div>
+                    <div class="suspect-name">Victor</div>
+                    <div class="suspect-relation">The Rival Collector</div>
+                </div>
+            </div>
         </div>
 
-        <!-- Right Column: 5 Suspects Dossier & Notebook -->
-        <div class="space-y-6">
+        <!-- Right Column: Detective Notebook & Actions -->
+        <div class="panel">
+            <h2>📖 Detective Notebook</h2>
+            <div class="notebook-log" id="notebookLog">
+                <div class="log-entry">[00:00] Case opened. 20 minutes remaining on the mansion grounds. Investigate all 5 rooms and interrogate suspects to uncover clues.</div>
+            </div>
 
-            <!-- Suspects Dossier (5 Suspects with Picture Face Avatars) -->
-            <section class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-lg font-bold text-amber-100 flex items-center gap-2 font-serif">
-                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 43.5c4.694 0 8.5-3.806 8.5-8.5S16.694 26.5 12 26.5 3.5 30.306 3.5 35s3.806 8.5 8.5 8.5zM12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878C9.518 22.463 9 23.682 9 25v1h6v-1c0-1.318-.518-2.537-1.438-3.122C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"/></svg>
-                        5 Suspects (First Names)
-                    </h2>
-                    <span class="text-xs text-slate-400">Click to question</span>
-                </div>
-                <div class="space-y-2.5" id="suspectsList">
-                    <!-- Populated via JavaScript -->
-                </div>
-            </section>
-
-            <!-- Detective Notebook & Final Accusation -->
-            <section class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-lg font-bold text-amber-100 flex items-center gap-2 font-serif">
-                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                        Detective Notebook
-                    </h2>
-                    <span id="clueCountBadge" class="text-xs bg-amber-950 text-amber-300 border border-amber-800/60 px-2 py-0.5 rounded-full font-semibold">0 Clues Found</span>
-                </div>
-                <p class="text-xs text-slate-400 mb-3">Evidence compiled from the 5 manor rooms.</p>
-                
-                <div id="notebookCluesList" class="space-y-2 max-h-44 overflow-y-auto pr-1 mb-4">
-                    <div class="text-xs text-slate-500 italic p-3 bg-slate-950/60 rounded-lg border border-slate-800 text-center">
-                        No evidence logged yet. Search manor rooms to gather clues.
-                    </div>
-                </div>
-
-                <!-- Accusation Action Button -->
-                <button onclick="openAccusationModal()" class="w-full py-3 bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 text-white font-bold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer border border-amber-500/40">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    Make Your Final Accusation
-                </button>
-            </section>
-
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full bg-slate-950 border-t border-slate-900 py-4 text-center text-xs text-slate-500">
-        Murder, Murder at the Mansion &bull; Published by Superavy Games &bull; Rated 13+
-    </footer>
-
-    <!-- Suspect Interrogation Modal -->
-    <div id="interrogateModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeInterrogation()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-            <div id="suspectModalContent"></div>
-            <div class="mt-6 flex justify-end">
-                <button onclick="closeInterrogation()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg cursor-pointer">
-                    Conclude Interview
-                </button>
+            <div class="action-panel">
+                <button class="btn btn-accuse" onclick="openAccusationModal()">Make Accusation</button>
+                <button class="btn btn-reset" onclick="resetGame()">Reset Case</button>
             </div>
         </div>
     </div>
 
-    <!-- Final Accusation Modal -->
-    <div id="accusationModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-amber-600/60 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
-            <button onclick="closeAccusationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-            
-            <h2 class="text-2xl font-bold text-amber-100 font-serif mb-2">Final Accusation</h2>
-            <p class="text-xs text-slate-300 mb-5">Review your detective notebook. Select the guilty suspect and the room where the crime took place.</p>
-
-            <div class="space-y-4 mb-6">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">Select the Culprit:</label>
-                    <select id="accuseSuspectSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-amber-500"></select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">Select the Crime Room:</label>
-                    <select id="accuseRoomSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-amber-500"></select>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-3">
-                <button onclick="closeAccusationModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer">
-                    Resume Investigation
-                </button>
-                <button onclick="submitAccusation()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow transition cursor-pointer">
-                    Submit Accusation
-                </button>
+    <!-- Generic Modal -->
+    <div class="modal-overlay" id="gameModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-title" id="modalTitle">Investigation Report</div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content injected dynamically -->
             </div>
         </div>
     </div>
 
-    <!-- Win / Loss Result Modal -->
-    <div id="resultModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border-2 border-amber-500 rounded-2xl max-w-lg w-full p-6 shadow-2xl text-center relative" id="resultContent"></div>
+    <!-- Accusation Modal -->
+    <div class="modal-overlay" id="accuseModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeAccusationModal()">&times;</button>
+            <div class="modal-title">Final Accusation</div>
+            <div class="modal-body">
+                Who committed the murder at Blackwood Manor? Choose wisely—you only get one shot at the real culprit!
+            </div>
+            <div class="accusation-list">
+                <div class="accuse-option" onclick="submitAccusation('Arthur')">
+                    <span>Arthur (The Business Partner)</span>
+                    <span>🔍</span>
+                </div>
+                <div class="accuse-option" onclick="submitAccusation('Eleanor')">
+                    <span>Eleanor (The Heir)</span>
+                    <span>🔍</span>
+                </div>
+                <div class="accuse-option" onclick="submitAccusation('Thomas')">
+                    <span>Thomas (The Estate Butler)</span>
+                    <span>🔍</span>
+                </div>
+                <div class="accuse-option" onclick="submitAccusation('Clara')">
+                    <span>Clara (The Confidant)</span>
+                    <span>🔍</span>
+                </div>
+                <div class="accuse-option" onclick="submitAccusation('Victor')">
+                    <span>Victor (The Rival Collector)</span>
+                    <span>🔍</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Notification Toast Box -->
-    <div id="messageBox" class="fixed bottom-6 right-6 bg-slate-900 border border-amber-500/80 text-amber-100 px-5 py-3 rounded-xl shadow-2xl z-50 hidden transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-3">
-        <svg class="w-5 h-5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span id="messageBoxText" class="text-xs font-medium">Notification</span>
-    </div>
-
-    <!-- Application Script -->
     <script>
-        // Game State Data with 5 Rooms and 5 Suspects
-        const gameState = {
-            activeRoomId: null,
-            rooms: {
-                study: {
-                    id: 'study',
-                    name: 'The Study',
-                    icon: '📜',
-                    colorAccent: 'amber',
-                    trim: 'Mahogany wood paneling with crimson velvet curtains and brass fixtures',
-                    desc: 'Lord Blackwood\'s private office. Ledgers and scattered documents rest upon the grand desk.',
-                    searched: false,
-                    clues: [
-                        { id: 'c1', title: 'Torn Will Document', desc: 'A charred scrap indicating sudden alterations to the family inheritance.' },
-                        { id: 'c2', title: 'Heavy Brass Candlestick', desc: 'Found near the fireplace with faint red stains on the metal base.' }
-                    ]
-                },
-                conservatory: {
-                    id: 'conservatory',
-                    name: 'The Conservatory',
-                    icon: '🌿',
-                    colorAccent: 'emerald',
-                    trim: 'Wrought-iron arched window frames with damp stone flooring and exotic ferns',
-                    desc: 'A humid glasshouse filled with rare orchids and moonlit shadows.',
-                    searched: false,
-                    clues: [
-                        { id: 'c3', title: 'Muddy Footprint Size 9', desc: 'Fresh tracks leading from the garden door toward the inner hallway.' },
-                        { id: 'c4', title: 'Broken Pocket Watch', desc: 'Stopped precisely at 11:42 PM inside a damp terracotta pot.' }
-                    ]
-                },
-                library: {
-                    id: 'library',
-                    name: 'The Library',
-                    icon: '📚',
-                    colorAccent: 'blue',
-                    trim: 'Dark oak bookshelves with gilded leather-bound volumes and sliding brass ladders',
-                    desc: 'Towering shelves of ancient literature. One specific bookshelf swings open to a secret passage.',
-                    searched: false,
-                    clues: [
-                        { id: 'c5', title: 'Poisoned Cognac Glass', desc: 'A crystal snifter laced with a bitter almond scent upon a reading table.' },
-                        { id: 'c6', title: 'Missing Poison Treatise', desc: 'An empty slot where a manuscript on rare herbal venoms belongs.' }
-                    ]
-                },
-                billiard: {
-                    id: 'billiard',
-                    name: 'Billiard Room',
-                    icon: '🎱',
-                    colorAccent: 'rose',
-                    trim: 'Deep green felt table with mahogany rails and polished brass cue racks',
-                    desc: 'A dimly lit parlor where late-night games of pool were played amidst drifting cigar smoke.',
-                    searched: false,
-                    clues: [
-                        { id: 'c7', title: 'Scratched Pool Cue', desc: 'A heavy wooden cue with scuff marks and fibers caught in the grip.' },
-                        { id: 'c8', title: 'Discarded Cigar Butt', desc: 'Still warm to the touch, indicating someone occupied this corner recently.' }
-                    ]
-                },
-                gallery: {
-                    id: 'gallery',
-                    name: 'The Gallery',
-                    icon: '🖼️',
-                    colorAccent: 'purple',
-                    trim: 'Ornate gilt picture frames with polished hardwood floors and velvet ropes',
-                    desc: 'A grand corridor displaying centuries of Blackwood ancestral portraits under dimmed spotlights.',
-                    searched: false,
-                    clues: [
-                        { id: 'c9', title: 'Dislodged Painting Hook', desc: 'An ancestral portrait crookedly hung, concealing a shallow wall safe.' },
-                        { id: 'c10', title: 'Velvet Glove Fragment', desc: 'A fine silk glove snagged upon a brass partition stanchion.' }
-                    ]
-                }
-            },
-            suspects: [
-                {
-                    id: 's1',
-                    name: 'Arthur',
-                    role: 'The Disinherited Heir',
-                    alibi: 'Claimed he was smoking cigars in the billiard room alone.',
-                    statement: '“My father threatened to cut me off permanently. But murder solves nothing when debt collectors are already at the gate.”',
-                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#fed7aa"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#0284c7"/><path d="M12 9h12v3H12z" fill="#334155"/></svg>`
-                },
-                {
-                    id: 's2',
-                    name: 'Eleanor',
-                    role: 'The Bitter Widow',
-                    alibi: 'Stated she was resting in her chambers with a migraine.',
-                    statement: '“Arthur cared more for his ledgers than for me. But murder? That is a vulgar accusation.”',
-                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#fbcfe8"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#db2777"/><path d="M12 10c0-4 3-7 6-7s6 3 6 7v4H12v-4z" fill="#f472b6"/></svg>`
-                },
-                {
-                    id: 's3',
-                    name: 'Thomas',
-                    role: 'The Loyal Butler',
-                    alibi: 'Was polishing silver down in the scullery.',
-                    statement: '“I have served Blackwood Manor for thirty years. Doors were bolted and secure.”',
-                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#cbd5e1"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#0f172a"/><polygon points="18,16 16,21 20,21" fill="#ef4444"/></svg>`
-                },
-                {
-                    id: 's4',
-                    name: 'Clara',
-                    role: 'The Family Physician',
-                    alibi: 'Claimed she was reviewing medical journals in the library.',
-                    statement: '“I prescribed Lord Blackwood his evening sedatives. Beyond my medical duties, I know nothing.”',
-                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#fed7aa"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#059669"/><circle cx="18" cy="11" r="2" fill="#ffffff"/></svg>`
-                },
-                {
-                    id: 's5',
-                    name: 'Victor',
-                    role: 'The Secret Blackmailer',
-                    alibi: 'Insisted he was waiting in the courtyard carriage house.',
-                    statement: '“Lord Blackwood owed me a considerable sum. Dead men pay no debts, so I had every reason to keep him breathing.”',
-                    avatarSvg: `<svg viewBox="0 0 36 36" class="w-full h-full rounded-full bg-slate-800"><circle cx="18" cy="14" r="6" fill="#e2e8f0"/><path d="M6 32c0-6 5-9 12-9s12 3 12 9v1H6v-1z" fill="#1e293b"/><rect x="11" y="11" width="14" height="2" fill="#475569"/></svg>`
-                }
-            ],
-            discoveredClues: [],
-            trueCulprit: 's2', // Eleanor
-            trueRoom: 'study'
+        // Game State
+        let timeLeft = 1200; // 20 minutes in seconds
+        let timerInterval = null;
+        let roomsSearched = 0;
+        let searchedRoomsList = {
+            study: false,
+            conservatory: false,
+            library: false,
+            billiard: false,
+            gallery: false
         };
 
-        // Initialize Game on Load
-        window.onload = function() {
-            renderRooms();
-            renderSuspects();
-            updateNotebook();
-            populateAccusationDropdowns();
+        const roomClues = {
+            study: "Study Searched: You found a torn ledger page indicating Arthur was heavily in debt to the victim and arguing over offshore asset transfers.",
+            conservatory: "Conservatory Searched: You found a crushed rare orchid petal near a muddy footprint belonging to Thomas the butler, who was near the rear terrace.",
+            library: "Library Searched: You found an open diary entry showing Eleanor discovered her inheritance was legally reallocated away from her.",
+            billiard: "Billiard Room Searched: You found a heavy brass fireplace poker left under the corner table with faint traces of recent disturbance.",
+            gallery: "Gallery Searched: You found an anonymous threatening note addressed to the victim regarding stolen artifacts associated with Victor."
         };
 
-        // Render Rooms
-        function renderRooms() {
-            const grid = document.getElementById('roomGrid');
-            grid.innerHTML = '';
+        const suspectAlibis = {
+            Arthur: "Arthur claims he was reviewing financial contracts alone in his private chamber until midnight.",
+            Eleanor: "Eleanor insists she was asleep upstairs when the disturbance occurred.",
+            Thomas: "Thomas states he was polishing silver in the scullery throughout the evening.",
+            Clara: "Clara claims she was tending to exotic plants in the greenhouse wing.",
+            Victor: "Victor says he was examining antique frames in the East Gallery by candlelight."
+        };
 
-            Object.values(gameState.rooms).forEach(room => {
-                const isSelected = gameState.activeRoomId === room.id;
-                const card = document.createElement('div');
-                card.className = `p-3.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
-                    isSelected 
-                        ? 'bg-amber-950/40 border-amber-500 shadow-md ring-1 ring-amber-500' 
-                        : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-950'
-                }`;
-                card.onclick = () => selectRoom(room.id);
-                
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-2xl">${room.icon}</span>
-                            <span class="text-[10px] px-2 py-0.5 rounded uppercase font-semibold ${room.searched ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/60' : 'bg-slate-800 text-slate-400'}">
-                                ${room.searched ? 'Searched' : 'Unsearched'}
-                            </span>
-                        </div>
-                        <h4 class="font-bold text-amber-100 font-serif text-sm mb-1">${room.name}</h4>
-                        <p class="text-[11px] text-slate-400 line-clamp-2">${room.desc}</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t border-slate-800/80 text-[10px] text-amber-400/90 font-medium truncate">
-                        Trim: ${room.trim}
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+        // Real Killer is Thomas (clue ties the muddy footprint / orchid petal and butler presence)
+        const trueKiller = "Thomas";
+
+        // Start Timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    triggerGameOver();
+                }
+            }, 1000);
         }
 
-        // Select Room
-        function selectRoom(roomId) {
-            gameState.activeRoomId = roomId;
-            renderRooms();
+        function updateTimerDisplay() {
+            let mins = Math.floor(timeLeft / 60);
+            let secs = timeLeft % 60;
+            let displayString = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            document.getElementById('timeRemaining').innerText = displayString;
 
-            const room = gameState.rooms[roomId];
-            document.getElementById('activeRoomTitle').innerText = room.name;
-            
-            const statusBadge = document.getElementById('roomSearchStatus');
-            statusBadge.innerText = room.searched ? 'Already Searched' : 'Ready to Search';
-            statusBadge.className = room.searched 
-                ? 'text-xs bg-emerald-950 px-2.5 py-1 rounded-full text-emerald-300 font-medium border border-emerald-800/60' 
-                : 'text-xs bg-amber-950 px-2.5 py-1 rounded-full text-amber-300 font-medium border border-amber-800/60';
-
-            const descEl = document.getElementById('activeRoomDesc');
-            descEl.innerHTML = `${room.desc}<br><br><strong class="text-amber-400">Architectural Trim:</strong> <span class="italic text-slate-300">${room.trim}</span>`;
-
-            const cluesContainer = document.getElementById('roomCluesContainer');
-            cluesContainer.innerHTML = '';
-
-            if (room.searched) {
-                room.clues.forEach(clue => {
-                    const clueDiv = document.createElement('div');
-                    clueDiv.className = 'p-3 bg-slate-950/80 border border-amber-900/40 rounded-xl flex items-start gap-3';
-                    clueDiv.innerHTML = `
-                        <div class="w-7 h-7 rounded-full bg-amber-950 border border-amber-600/60 flex items-center justify-center text-amber-300 text-xs font-bold shrink-0 mt-0.5">🔍</div>
-                        <div>
-                            <h5 class="text-xs font-bold text-amber-200 font-serif">${clue.title}</h5>
-                            <p class="text-xs text-slate-300 mt-0.5">${clue.desc}</p>
-                        </div>
-                    `;
-                    cluesContainer.appendChild(clueDiv);
-                });
-            } else {
-                cluesContainer.innerHTML = `
-                    <div class="p-4 bg-slate-950/50 border border-slate-800 rounded-xl text-center text-xs text-slate-400">
-                        This room has not been searched yet. Click the button below to inspect corners and collect evidence.
-                    </div>
-                `;
+            if (timeLeft < 180) { // under 3 minutes
+                document.getElementById('timerDisplay').classList.add('warning');
             }
-
-            document.getElementById('searchRoomBtn').disabled = room.searched;
         }
 
-        // Search Current Room
-        function searchCurrentRoom() {
-            if (!gameState.activeRoomId) return;
-            const room = gameState.rooms[gameState.activeRoomId];
-            if (room.searched) return;
-
-            room.searched = true;
-
-            room.clues.forEach(clue => {
-                if (!gameState.discoveredClues.some(c => c.id === clue.id)) {
-                    gameState.discoveredClues.push(clue);
-                }
-            });
-
-            renderRooms();
-            selectRoom(room.id);
-            updateNotebook();
-            showNotification(`Searched ${room.name} and logged new evidence!`);
-        }
-
-        // Render Suspects
-        function renderSuspects() {
-            const list = document.getElementById('suspectsList');
-            list.innerHTML = '';
-
-            gameState.suspects.forEach(suspect => {
-                const item = document.createElement('div');
-                item.className = 'p-3 bg-slate-950/70 hover:bg-slate-950 border border-slate-800 hover:border-slate-700 rounded-xl transition cursor-pointer flex items-center justify-between';
-                item.onclick = () => openInterrogation(suspect.id);
-
-                item.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full border border-amber-600/60 overflow-hidden shrink-0 shadow-inner">
-                            ${suspect.avatarSvg}
-                        </div>
-                        <div>
-                            <h4 class="text-xs font-bold text-amber-100 font-serif">${suspect.name}</h4>
-                            <span class="text-[10px] text-slate-400">${suspect.role}</span>
-                        </div>
-                    </div>
-                    <span class="text-xs text-amber-400/90 font-medium bg-amber-950/60 px-2.5 py-1 rounded border border-amber-900/50">Question</span>
-                `;
-                list.appendChild(item);
-            });
-        }
-
-        // Interrogation Modal
-        function openInterrogation(suspectId) {
-            const suspect = gameState.suspects.find(s => s.id === suspectId);
-            if (!suspect) return;
-
-            const content = document.getElementById('suspectModalContent');
-            content.innerHTML = `
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-16 h-16 rounded-full border-2 border-amber-600 overflow-hidden shrink-0 shadow-md">
-                        ${suspect.avatarSvg}
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-amber-100 font-serif">${suspect.name}</h3>
-                        <span class="text-xs text-amber-400/90 font-medium">${suspect.role}</span>
-                    </div>
-                </div>
-                
-                <div class="space-y-3 text-xs text-slate-300">
-                    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
-                        <strong class="text-amber-400 block mb-1">Stated Alibi:</strong>
-                        ${suspect.alibi}
-                    </div>
-                    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
-                        <strong class="text-amber-400 block mb-1">Statement Under Questioning:</strong>
-                        <p class="italic">${suspect.statement}</p>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('interrogateModal').classList.remove('hidden');
-        }
-
-        function closeInterrogation() {
-            document.getElementById('interrogateModal').classList.add('hidden');
-        }
-
-        // Update Notebook
-        function updateNotebook() {
-            const list = document.getElementById('notebookCluesList');
-            const badge = document.getElementById('clueCountBadge');
+        function logToNotebook(text) {
+            const log = document.getElementById('notebookLog');
+            let mins = Math.floor((1200 - timeLeft) / 60);
+            let secs = (1200 - timeLeft) % 60;
+            let timeStamp = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
             
-            badge.innerText = `${gameState.discoveredClues.length} Clues Found`;
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `[${timeStamp}] ${text}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
 
-            if (gameState.discoveredClues.length === 0) {
-                list.innerHTML = `
-                    <div class="text-xs text-slate-500 italic p-3 bg-slate-950/60 rounded-lg border border-slate-800 text-center">
-                        No evidence logged yet. Search manor rooms to gather clues.
-                    </div>
-                `;
+        function searchRoom(roomName) {
+            if (searchedRoomsList[roomName]) {
+                showModal("Room Already Checked", `You have already investigated the ${roomName}. Review your notebook for clues.`);
                 return;
             }
 
-            list.innerHTML = '';
-            gameState.discoveredClues.forEach(clue => {
-                const clueEl = document.createElement('div');
-                clueEl.className = 'p-2.5 bg-slate-950/90 border border-slate-800 rounded-lg text-xs';
-                clueEl.innerHTML = `
-                    <div class="font-bold text-amber-200 font-serif mb-0.5 flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                        ${clue.title}
-                    </div>
-                    <div class="text-slate-400 text-[11px] leading-tight">${clue.desc}</div>
-                `;
-                list.appendChild(clueEl);
-            });
+            searchedRoomsList[roomName] = true;
+            roomsSearched++;
+            document.getElementById('roomCounter').innerText = `Searched: ${roomsSearched}/5`;
+            document.getElementById(`status-${roomName}`).innerText = "Status: Investigated ✓";
+
+            let clue = roomClues[roomName];
+            logToNotebook(clue);
+            showModal(`Investigation: ${roomName.toUpperCase()}`, clue);
         }
 
-        // Populate Accusation Dropdowns
-        function populateAccusationDropdowns() {
-            const suspectSelect = document.getElementById('accuseSuspectSelect');
-            suspectSelect.innerHTML = '';
-            gameState.suspects.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.innerText = `${s.name} (${s.role})`;
-                suspectSelect.appendChild(opt);
-            });
+        function interrogateSuspect(name) {
+            let alibi = suspectAlibis[name];
+            logToNotebook(`Interrogated ${name}: "${alibi}"`);
+            showModal(`Suspect Interview: ${name}`, alibi);
+        }
 
-            const roomSelect = document.getElementById('accuseRoomSelect');
-            roomSelect.innerHTML = '';
-            Object.values(gameState.rooms).forEach(r => {
-                const opt = document.createElement('option');
-                opt.value = r.id;
-                opt.innerText = r.name;
-                roomSelect.appendChild(opt);
-            });
+        function showModal(title, bodyText) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = bodyText;
+            document.getElementById('gameModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('gameModal').style.display = 'none';
         }
 
         function openAccusationModal() {
-            document.getElementById('accusationModal').classList.remove('hidden');
+            document.getElementById('accuseModal').style.display = 'flex';
         }
 
         function closeAccusationModal() {
-            document.getElementById('accusationModal').classList.add('hidden');
+            document.getElementById('accuseModal').style.display = 'none';
         }
 
-        // Submit Final Accusation
-        function submitAccusation() {
+        function submitAccusation(suspectName) {
             closeAccusationModal();
+            clearInterval(timerInterval);
 
-            const selectedSuspectId = document.getElementById('accuseSuspectSelect').value;
-            const selectedRoomId = document.getElementById('accuseRoomSelect').value;
+            let resultTitle = "";
+            let resultBody = "";
 
-            const isCorrectSuspect = selectedSuspectId === gameState.trueCulprit;
-            const isCorrectRoom = selectedRoomId === gameState.trueRoom;
-
-            const suspectObj = gameState.suspects.find(s => s.id === gameState.trueCulprit);
-            const roomObj = gameState.rooms[gameState.trueRoom];
-
-            const resultContent = document.getElementById('resultContent');
-
-            if (isCorrectSuspect && isCorrectRoom) {
-                document.getElementById('headerStatus').innerText = 'Case Solved!';
-                document.getElementById('headerStatus').className = 'text-emerald-400 font-semibold';
-
-                resultContent.innerHTML = `
-                    <div class="w-16 h-16 bg-emerald-950 border border-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-400 text-3xl font-bold">✓</div>
-                    <h2 class="text-2xl font-bold text-amber-100 font-serif mb-2">Brilliant Deduction, Detective!</h2>
-                    <p class="text-xs text-slate-300 mb-6 leading-relaxed">
-                        You successfully unmasked <strong class="text-amber-300">${suspectObj.name}</strong> as the murderer who struck inside <strong class="text-amber-300">${roomObj.name}</strong>! Scotland Yard has arrived and the culprit has been detained.
-                    </p>
-                    <button onclick="resetGame()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow transition cursor-pointer">
-                        Play Again
-                    </button>
-                `;
+            if (suspectName === trueKiller) {
+                resultTitle = "🎉 Case Solved Successfully!";
+                resultBody = `Brilliant detective work! You correctly accused ${suspectName}. The evidence from the conservatory combined with the physical clues firmly established their guilt. Justice has been served at Blackwood Manor!`;
             } else {
-                document.getElementById('headerStatus').innerText = 'Wrong Accusation';
-                document.getElementById('headerStatus').className = 'text-rose-400 font-semibold';
-
-                resultContent.innerHTML = `
-                    <div class="w-16 h-16 bg-rose-950 border border-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-400 text-3xl font-bold">✗</div>
-                    <h2 class="text-2xl font-bold text-amber-100 font-serif mb-2">A Fatal Miscalculation...</h2>
-                    <p class="text-xs text-slate-300 mb-6 leading-relaxed">
-                        Your accusation was incorrect! The true mastermind was <strong class="text-amber-300">${suspectObj.name}</strong> in <strong class="text-amber-300">${roomObj.name}</strong>. The real killer has slipped away into the stormy night.
-                    </p>
-                    <button onclick="resetGame()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl shadow transition cursor-pointer">
-                        Try Again
-                    </button>
-                `;
+                resultTitle = "❌ Wrong Accusation!";
+                resultBody = `You accused ${suspectName}, but they were innocent! The real murderer (${trueKiller}) slipped away into the night while the wrong person was locked away. Case closed in failure.`;
             }
 
-            document.getElementById('resultModal').classList.remove('hidden');
+            showModal(resultTitle, resultBody);
         }
 
-        // Reset Game
+        function triggerGameOver() {
+            showModal("⏰ Time Expired!", "The 20-minute investigative window has elapsed. The mansion grounds are now locked down by local authorities before you could solve the mystery. Game Over.");
+        }
+
         function resetGame() {
-            document.getElementById('resultModal').classList.add('hidden');
-            document.getElementById('headerStatus').innerText = 'Active Inquiry';
-            document.getElementById('headerStatus').className = 'text-amber-400 font-semibold';
-
-            gameState.activeRoomId = null;
-            gameState.discoveredClues = [];
-            Object.values(gameState.rooms).forEach(r => r.searched = false);
-
-            renderRooms();
-            renderSuspects();
-            updateNotebook();
-
-            // Randomize culprit and room
-            const suspectKeys = gameState.suspects.map(s => s.id);
-            const roomKeys = Object.keys(gameState.rooms);
-            gameState.trueCulprit = suspectKeys[Math.floor(Math.random() * suspectKeys.length)];
-            gameState.trueRoom = roomKeys[Math.floor(Math.random() * roomKeys.length)];
-
-            document.getElementById('activeRoomTitle').innerText = 'Select a Room to Begin';
-            document.getElementById('roomSearchStatus').innerText = 'Unsearched';
-            document.getElementById('roomSearchStatus').className = 'text-xs bg-slate-800 px-2.5 py-1 rounded-full text-slate-300 font-medium';
-            document.getElementById('activeRoomDesc').innerHTML = 'Choose one of the 5 rooms above (Study, Conservatory, Library, Billiard Room, or Gallery) to inspect architectural trims, search for clues, and gather evidence.';
-            document.getElementById('roomCluesContainer').innerHTML = '';
-            document.getElementById('searchRoomBtn').disabled = true;
-
-            showNotification('New investigation case opened at Blackwood Manor.');
+            location.reload();
         }
 
-        // Notification Toast
-        function showNotification(text) {
-            const box = document.getElementById('messageBox');
-            const textEl = document.getElementById('messageBoxText');
-            textEl.innerText = text;
-
-            box.classList.remove('hidden');
-            setTimeout(() => {
-                box.classList.remove('translate-y-10', 'opacity-0');
-            }, 10);
-
-            setTimeout(() => {
-                box.classList.add('translate-y-10', 'opacity-0');
-                setTimeout(() => {
-                    box.classList.add('hidden');
-                }, 300);
-            }, 3500);
-        }
+        // Initialize timer on load
+        window.onload = function() {
+            startTimer();
+        };
     </script>
 </body>
 </html>
