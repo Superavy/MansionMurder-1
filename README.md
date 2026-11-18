@@ -1,2 +1,2 @@
 # MansionMurder-1
-Murdery mystery web game.
+A Murder mystery web game.
