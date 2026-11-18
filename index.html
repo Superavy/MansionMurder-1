@@ -241,14 +241,14 @@
 
         /* Action Buttons */
         .action-panel {
-            display: flex;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             margin-top: 20px;
         }
 
         .btn {
-            flex: 1;
-            padding: 12px 20px;
+            padding: 12px 15px;
             border-radius: 8px;
             font-weight: 700;
             border: none;
@@ -256,6 +256,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             transition: opacity 0.2s;
+            text-align: center;
         }
 
         .btn:hover {
@@ -265,6 +266,12 @@
         .btn-accuse {
             background: var(--accent-crimson);
             color: white;
+            grid-column: span 2;
+        }
+
+        .btn-tip {
+            background: var(--accent-gold);
+            color: #111827;
         }
 
         .btn-reset {
@@ -478,8 +485,9 @@
             </div>
 
             <div class="action-panel">
-                <button class="btn btn-accuse" onclick="openAccusationModal()">Make Accusation</button>
+                <button class="btn btn-tip" onclick="showFreeTip()">💡 Free Tip</button>
                 <button class="btn btn-reset" onclick="resetGame()">Reset Case</button>
+                <button class="btn btn-accuse" onclick="openAccusationModal()">Make Accusation</button>
             </div>
         </div>
     </div>
@@ -557,7 +565,7 @@
             Victor: "Victor says he was examining antique frames in the East Gallery by candlelight."
         };
 
-        // Real Killer is Thomas (clue ties the muddy footprint / orchid petal and butler presence)
+        // Real Killer is Thomas
         const trueKiller = "Thomas";
 
         // Start Timer
@@ -617,6 +625,12 @@
             let alibi = suspectAlibis[name];
             logToNotebook(`Interrogated ${name}: "${alibi}"`);
             showModal(`Suspect Interview: ${name}`, alibi);
+        }
+
+        function showFreeTip() {
+            let tipText = "💡 Detective Master Tip: Pay close attention to physical evidence left behind in the rooms rather than just alibis. Physical footprints and botanical traces don't lie!";
+            logToNotebook("Requested Free Tip from Headquarters.");
+            showModal("Detective Tip", tipText);
         }
 
         function showModal(title, bodyText) {
