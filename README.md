@@ -1,2 +1,2 @@
 # MansionMurder-1
-Blackwood Manor murder mystery web game.
+Murdery mystery web game.
